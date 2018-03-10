@@ -1,0 +1,269 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>Read-me for Kilgarriff's BNC word frequency lists</title>
+<!-- Changed by: Adam Kilgarriff,  2-Nov-1998 -->
+</head>
+<body>
+<center>
+<h1>BNC database and word frequency lists</h1>
+<h2>Adam Kilgarriff</h2>
+</center>
+
+
+This file describes assorted frequency lists and related documentation for the 
+<a href="http://info.ox.ac.uk/bnc">British National Corpus (BNC)</a>, to be found on this website. <p>
+
+The files are:
+
+<UL>
+<LI> a <a href="bnc-readme.html#bib">bibliographical database</a>
+<li> a <a href="bnc-readme.html#lemmatised">lemmatised</a> frequency list (various formats)
+<li> <a href="bnc-readme.html#raw">unlemmatised</a>, or 'raw',  frequency lists (various formats)
+<li> <a href="bnc-readme.html#variances">variances</a> of word frequencies
+</UL>
+For a list and brief descriptions of CLAWS POS-tags, see <a   href="https://www.kilgarriff.co.uk/BNClists/poscodes.html">here</a>.
+
+
+<p>	
+<h2><a name="bib">Bibliographical database</a></h2>
+
+This gives bibliographical specifications of the 4124 files in the BNC, in a one-line-per  format (described in full in the first part of the file).  Filename: bib-dbase.  Click <a href="https://www.kilgarriff.co.uk/BNClists/bib-dbase">here</a>.
+
+<h2><a name="lemmatised">Lemmatised list</a></h2>
+
+There is a lemmatised frequency list for the 6,318 words with more than 800
+occurrences in the whole 100M-word BNC. The definition of a 'word'
+approximates to a headword in an EFL dictionary such as Longman's
+Dictionary of Contemporary English: so, eg, nominal and verbal "help"
+are listed separately, and the count for verbal "help" is the sum of
+counts for verbal 'help', 'helps', 'helping', 'helped'. 
+<p>
+
+The lemmatised list is called 'lemma' and is available in four forms:
+ordered alphabetically or by frequency, and compressed (using gzip) or
+uncompressed, so the four files are:
+<ul>
+
+    <li>    <a href="https://www.kilgarriff.co.uk/BNClists/lemma.al">lemma.al</a>        (124 K</a>B)
+     <li>     <a href="https://www.kilgarriff.co.uk/BNClists/lemma.al.gz"> lemma.al.gz</a>         (55 KB)
+     <li>     <a href="https://www.kilgarriff.co.uk/BNClists/lemma.num">lemma.num</a>         (124 KB)
+     <li>     <a href="https://www.kilgarriff.co.uk/BNClists/lemma.num.gz"> lemma.num.gz</a>        (55 KB)
+</ul>
+The format for the list is:
+<p>
+<pre>
+        sort-order, frequency, word, word-class
+</pre>
+and a sample from the top of the alphabetically-ordered list is:
+<p>
+<pre>
+	5 2186369 a det
+	2107 4249 abandon v
+	5204 1110 abbey n
+	966 10468 ability n
+	321 30454 able a
+</pre>
+The list-creation process replicated that used at Longman for marking
+dictionary frequencies in LDOCE 3rd edition, a process described in <p>
+<ul><li>
+     Kilgarriff, A. Putting Frequencies in the Dictionary. 
+     <I>International Journal of Lexicography</I> 10 (2) 1997.  Pp 135--155.  Available <a href="Publications/1996-K-IJLFreqs.pdf">here</a>.<p>
+ </ul>
+
+Numbers, names, and items that would usually be capitalised are
+excluded.  Only simple words (eg containing no spaces) were
+considered.  The following set of word classes is used:
+<p>
+<pre>
+	conj (conjunction)            34 items
+	adv  (adverb)                427
+	v    (verb)                 1281
+	det  (determiner)             47
+	pron (pronoun)                46
+	interjection                  13
+	a    (adjective)            1124
+	n    (noun)                 3262
+	prep (preposition)            71
+	modal                         12
+	infinitive-marker              1
+</pre>
+A word like "right" has four list entries, for adjective, adverb,
+interjection and noun.  (Just ten words have more than three list
+entries.)
+<p>
+Unlike the Longman list, only the BNC was used (so the lists only
+reflect British, not American, frequencies); spoken and written
+frequencies are not separated; spelling variants are not counted as a
+single word; manual checking was less extensive. 
+The lemmatised list was generated from the unlemmatised lists which
+are thus a less theory-dependent form of data.
+
+<h2><a name="raw">Unlemmatised lists</a></h2>
+
+
+	These are all available in 6 forms:
+     <ul>
+       <li>   sorted alphabetically ("al") 
+               or by frequency (highest frequency first) ("num");
+       <li>   the complete lists, or a smaller file containing only those
+               items occurring over five times (suffix "o5");
+        <li>  all lists are available compressed using gzip (".gz").  The
+         </ul>      o5 lists are also available uncompressed (no suffix). 
+  
+The frequencies are for &lt;CLAWS-word, POS&gt; pairs.  NB some CLAWS words
+- eg "in spite of" are not orthographic words, while others are
+numbers etc, and some POS's are CLAWS 'portmanteau tags', eg NN1-VVB,
+where CLAWS was uncertain as to whether the word was a singular common
+noun or base form of a verb. See BNC manual for serious documentation,
+also my "Putting frequencies in the dictionary" (see above).
+<p>
+
+For a list and brief descriptions of CLAWS POS-tags, see <a
+							    href="https://www.kilgarriff.co.uk/BNClists/poscodes.html">here</a>.
+<p>
+
+
+The format is: four fields, separated by spaces.
+<pre>
+	1: frequency
+	2: word
+	3: pos
+	4: number of files the word occurs in
+</pre>
+For non-orthographic words, spaces are replaced by underscore, giving
+eg "in_spite_of".
+
+<p>
+Lists are provided for the complete BNC (<tt>all</tt>), and for three subsets, as below:
+<pre>
+	cg	'context-governed' spoken material    
+		(eg meetings, lectures etc)  6.2M tokens,  79,906 types
+	demog  	'demographic' spoken material        
+		(eg conversation)	     4.2M tokens,  54,652 types
+        written                             89.7M tokens, 921,074 types
+	all 	                           100.1M tokens, 939,028 types
+</pre>
+File sizes in MB ("al" and "num" variants all the same size) are:
+
+<pre>
+		all uncompressed	.gz	o5	o5.gz
+-------------------------------------------------------------
+all		18.1			4.8	4.0	1.32
+cg		 1.4			0.39	0.43	0.15
+demog		 0.9			0.26	0.25	0.09	
+written		17.8			4.7	3.9	1.30
+-------------------------------------------------------------
+</pre>
+For all.al.gz click <a href="https://www.kilgarriff.co.uk/BNClists/all.al.gz">here</a><br>
+For all.al.o5 click <a href="https://www.kilgarriff.co.uk/BNClists/all.al.o5">here</a><br>
+For all.al.o5.gz click <a href="https://www.kilgarriff.co.uk/BNClists/all.al.o5.gz">here</a><br>
+For all.num.gz click <a href="https://www.kilgarriff.co.uk/BNClists/all.num.gz">here</a><br>
+For all.num.o5 click <a href="https://www.kilgarriff.co.uk/BNClists/all.num.o5">here</a><br>
+For all.num.o5.gz click <a href="https://www.kilgarriff.co.uk/BNClists/all.num.o5.gz">here</a><br>
+For written.al.gz click <a href="https://www.kilgarriff.co.uk/BNClists/written.al.gz">here</a><br>
+For written.al.o5 click <a href="https://www.kilgarriff.co.uk/BNClists/written.al.o5">here</a><br>
+For written.al.o5.gz click <a href="https://www.kilgarriff.co.uk/BNClists/written.al.o5.gz">here</a><br>
+For written.num.gz click <a href="https://www.kilgarriff.co.uk/BNClists/written.num.gz">here</a><br>
+For written.num.o5 click <a href="https://www.kilgarriff.co.uk/BNClists/written.num.o5">here</a><br>
+For written.num.o5.gz click <a href="https://www.kilgarriff.co.uk/BNClists/written.num.o5.gz">here</a><br>
+For cg.al.gz click <a href="https://www.kilgarriff.co.uk/BNClists/cg.al.gz">here</a><br>
+For cg.al.o5 click <a href="https://www.kilgarriff.co.uk/BNClists/cg.al.o5">here</a><br>
+For cg.al.o5.gz click <a href="https://www.kilgarriff.co.uk/BNClists/cg.al.o5.gz">here</a><br>
+For cg.num.gz click <a href="https://www.kilgarriff.co.uk/BNClists/cg.num.gz">here</a><br>
+For cg.num.o5 click <a href="https://www.kilgarriff.co.uk/BNClists/cg.num.o5">here</a><br>
+For cg.num.o5.gz click <a href="https://www.kilgarriff.co.uk/BNClists/cg.num.o5.gz">here</a><br>
+For demog.al.gz click <a href="https://www.kilgarriff.co.uk/BNClists/demog.al.gz">here</a><br>
+For demog.al.o5 click <a href="https://www.kilgarriff.co.uk/BNClists/demog.al.o5">here</a><br>
+For demog.al.o5.gz click <a href="https://www.kilgarriff.co.uk/BNClists/demog.al.o5.gz">here</a><br>
+For demog.num.gz click <a href="https://www.kilgarriff.co.uk/BNClists/demog.num.gz">here</a><br>
+For demog.num.o5 click <a href="https://www.kilgarriff.co.uk/BNClists/demog.num.o5">here</a><br>
+For demog.num.o5.gz click <a href="https://www.kilgarriff.co.uk/BNClists/demog.num.o5.gz">here</a><br>
+
+<h2><a name="variances">Variances</a></h2>
+
+It has long been noted that corpus frequencies, taken alone, give a
+very limited picture of a word's distribution in a corpus.  As well as
+varying in raw frequency, words vary in the extent to which they are
+equally spread across the documents on the corpus.  This 'burstiness'
+can be measured in a variety of ways (Church and Gale, "Poisson
+Mixtures", JNLE 1(2), 1996). One straightforward possibility is to
+take a large number of documents, all of the same length; count the
+frequency of a word in each of these documents; and calculate the
+(mean and) variance of this frequency.
+
+<p>
+The file presents the results of such an exercise. It is potentially
+of interest for various statistical approaches to text processing
+(e.g. as author identification and information retrieval) as well as
+for linguistic studies of how much semantic content different English
+words have.
+
+<h4>Method</h4>
+
+The first 5,000 words of all documents (=files) longer than
+5,000 words in the written part of the BNC were taken.  There were 2018 of these,
+so the subcorpus was slightly over 10M words.  (I used
+written-only on the premise that the spoken material would be too
+different to usefully treat as part of the same population - of
+course, one might say this about all sorts of subcorpora, but never
+mind.)  A frequency list was produced for each of these (truncated)
+documents. Then, taking the 8189 word-pos pairs occurring 100 times or
+more in the sample, a 2018x8189 table giving the frequency
+of each word in each document was produced.  For each word, the mean
+and variance was calculated.
+
+There were two ways to calculate mean and variance: including the zeros (eg
+always dividing by 2018) or excluding them (dividing by the number of documents the word occurred in).  For most purposes, it is the former
+that is of interest so this is what I present. The "exclusive" figures
+may readily be reconstructed.
+
+<h4>File format</h4>
+
+Columns are
+<pre>
+(1)     Word            )Using BNC definitions of 'word' and tags
+(2)     POS-tag         ) - see IJL paper (details above)
+(3)     Total freq (in 10M corpus)
+(4)     (Truncated) documents that word-pos pair occurs in (out of 2018)
+(5)     Mean (= Total freq./2018)
+(6)     Variance
+(7)     Variance/mean
+</pre>
+The last is useful because, for distributions like the normal,
+poisson, binomial, variance increases with mean, so, to make the
+variance figures comparable for words of different base frequency, it
+is necessary to normalise by the mean.  This is the figure that shows
+that, e.g., pronouns have very high variability, and prepositions, low
+(cf. Kucera and Francis 1982).
+
+Words are presented in frequency order.  The file is 400 KB
+(uncompressed) and 100 KB (compressed).<p>
+Uncompressed, available
+<a href="https://www.kilgarriff.co.uk/BNClists/variances">here</a>.<br>
+Compressed, available
+<a href="https://www.kilgarriff.co.uk/BNClists/variances.gz">here</a>.<br>
+
+
+
+
+<p>
+<hr>
+    
+<small>
+This page: <tt>http://www.kilgarriff.co.uk/bnc-readme.html</tt><br>
+Written: 20 Nov 1995<br>
+Updated: 15 March 1996<br>
+HTML version: 3 Nov 1998<br>
+Moved to http://www.kilgarriff.co.uk website: 1 Mar 2006<br>
+</small>
+    <hr>
+</dl>
+
+
+</body>
+</html>
+
+
+
