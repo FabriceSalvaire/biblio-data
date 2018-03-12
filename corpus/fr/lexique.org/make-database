@@ -33,6 +33,7 @@ import argparse
 import sys
 
 from Babel.Config import ConfigInstall
+from Babel.Corpus import tag_registry
 from Babel.DataBase.CorpusDataBase import CorpusSqliteDataBase
 
 ####################################################################################################
@@ -43,36 +44,42 @@ args = argument_parser.parse_args()
 
 ####################################################################################################
 
-FIELDS = (
-    'ortho', # le mot
-    'phon', # les formes phonologiques du mot
-    'lemme', # les lemmes de ce mot
-    'cgram', # les catégories grammaticales de ce mot
-    'genre', # le genre
-    'nombre', # le nombre
-    'freqlemfilms', # la fréquence du lemme selon le corpus de sous-titres (par million d’occurrences)
-    'freqlemlivres', # la fréquence du lemme selon le corpus de livres (par million d’occurrences)
-    'freqfilms', # la fréquence du mot selon le corpus de sous-titres (par million d’occurrences)
-    'freqlivres', # la fréquence du mot selon le corpus de livres (par million d’occurrences)
-    'infover', # modes, temps, et personnes possibles pour les verbes
-    'nbhomogr', # nombre d'homographes
-    'nbhomoph', # nombre d'homophones
-    'islem', # indique si c'est un lemme ou pas
-    'nblettres', # le nombre de lettres
-    'nbphons', # nombre de phonèmes
-    'cvcv', # la structure orthographique
-    'p-cvcv', # la structure phonologique
-    'voisorth', # nombre de voisins orthographiques
-    'voisphon', # nombre de voisins phonologiques
-    'puorth', # point d'unicité orthographique
-    'puphon', # point d'unicité phonologique
-    'syll', # forme phonologique syllabée
-    'nbsyll', # nombre de syllabes
-    'cv-cv ', # structure phonologique syllabée
-    'orthrenv', # forme orthograhique inversée
-    'phonrenv', # forme phonologique inversée
-    'orthosyll', # forme orthographique syllabée
-)
+sqlite_path = ConfigInstall.Corpus.sqlite_path
+database = CorpusSqliteDataBase(sqlite_path)
+fr_tags = tag_registry['fr']
+
+####################################################################################################
+
+# FIELDS = (
+#     'ortho', # le mot
+#     'phon', # les formes phonologiques du mot
+#     'lemme', # les lemmes de ce mot
+#     'cgram', # les catégories grammaticales de ce mot
+#     'genre', # le genre
+#     'nombre', # le nombre
+#     'freqlemfilms', # la fréquence du lemme selon le corpus de sous-titres (par million d’occurrences)
+#     'freqlemlivres', # la fréquence du lemme selon le corpus de livres (par million d’occurrences)
+#     'freqfilms', # la fréquence du mot selon le corpus de sous-titres (par million d’occurrences)
+#     'freqlivres', # la fréquence du mot selon le corpus de livres (par million d’occurrences)
+#     'infover', # modes, temps, et personnes possibles pour les verbes
+#     'nbhomogr', # nombre d'homographes
+#     'nbhomoph', # nombre d'homophones
+#     'islem', # indique si c'est un lemme ou pas
+#     'nblettres', # le nombre de lettres
+#     'nbphons', # nombre de phonèmes
+#     'cvcv', # la structure orthographique
+#     'p-cvcv', # la structure phonologique
+#     'voisorth', # nombre de voisins orthographiques
+#     'voisphon', # nombre de voisins phonologiques
+#     'puorth', # point d'unicité orthographique
+#     'puphon', # point d'unicité phonologique
+#     'syll', # forme phonologique syllabée
+#     'nbsyll', # nombre de syllabes
+#     'cv-cv ', # structure phonologique syllabée
+#     'orthrenv', # forme orthograhique inversée
+#     'phonrenv', # forme phonologique inversée
+#     'orthosyll', # forme orthographique syllabée
+# )
 
 FIELDS = (
    'ortho',
@@ -112,31 +119,16 @@ FIELDS = (
    'nbmorph',
 )
 
-POS = (
-    'ADJ', # Adjectif
-    'ADJ:dem', # Adjectif démonstratif
-    'ADJ:int', # Adjectif interrogatif
-    'ADJ:ind', #  Adjectif indéfini
-    'ADJ:num', #  Adjectif numérique
-    'ADJ:pos', #  Adjectif possessif
-    'ADV', #  Adverbe
-    'ART:def', #  Article défini
-    'ART:ind', # Article indéfini
-    'AUX', #  Auxiliaire
-    'CON', #  Conjonction
-    'LIA', #  Liaison euphonique (l')
-    'NOM', #  Nom commun
-    'ONO', #  Onomatopée
-    'PRE', #  Préposition
-    'PRO:dem', #  Pronom démonstratif
-    'PRO:ind', #  Pronom indéfini
-    'PRO:int', #  Pronom interrogatif
-    'PRO:per', #  Pronom personnel
-    'PRO:pos', #  Pronom possessif
-    'PRO:rel', #  Pronom relatif
-    'VER', # Verbe,
-)
-POS_MAP = {name:i for i, name in enumerate(POS)}
+# Empty cgram
+#
+# {'ortho': 'o', 'phon': 'o', 'lemme': 'o', 'cgram': '', 'genre': '', 'nombre': '', 'freq': 0.02}
+# {'ortho': 'team', 'phon': 'tim', 'lemme': 'team', 'cgram': '', 'genre': '', 'nombre': '', 'freq': 0.06}
+# {'ortho': 'à brûle-pourpoint', 'phon': 'abRylpuRpw5', 'lemme': 'à brûle-pourpoint', 'cgram': '', 'genre': '', 'nombre': '', 'freq': 0.28}
+# {'ortho': 'à cloche-pied', 'phon': 'aklOSpje', 'lemme': 'à cloche-pied', 'cgram': '', 'genre': '', 'nombre': '', 'freq': 0.44}
+# {'ortho': 'à rebrousse-poil', 'phon': 'aR°bRuspwal', 'lemme': 'à rebrousse-poil', 'cgram': '', 'genre': '', 'nombre': '', 'freq': 0.16}
+# {'ortho': 'à tire-larigot', 'phon': 'atiRlaRigo', 'lemme': 'à tire-larigot', 'cgram': '', 'genre': '', 'nombre': '', 'freq': 0.34}
+# {'ortho': 'à touche-touche', 'phon': 'atuStuS', 'lemme': 'à touche-touche', 'cgram': '', 'genre': '', 'nombre': '', 'freq': 0.02}
+# {'ortho': 'à tue-tête', 'phon': 'atytEt', 'lemme': 'à tue-tête', 'cgram': '', 'genre': '', 'nombre': '', 'freq': 1.08}
 
 ####################################################################################################
 
@@ -149,7 +141,7 @@ class Word:
         for key in ('ortho', 'phon', 'lemme', 'genre', 'nombre'):
             setattr(self, key, getattr(word_entry, key))
 
-        self.tag = [word_entry.cgram]
+        self.tags = [word_entry.cgram]
         self.freq = sum([float(value) for value in (word_entry.freqfilms2, word_entry.freqlivres)])
         self.freq *= 1e6
         self.rank = 0
@@ -158,7 +150,7 @@ class Word:
 
     def merge(self, word):
 
-        self.tag += word.tag
+        self.tags += word.tags
         self.freq += word.freq
 
     ##############################################
@@ -169,17 +161,13 @@ class Word:
     ##############################################
 
     @property
-    def tag_int(self):
-
-        value = 0
-        for name in self.tag:
-            value += 1 << POS_MAP[name]
-        return value
+    def tags_int(self):
+        return fr_tags.encode_tags(self.tags)
 
     ##############################################
 
-    def __str__(self):
-        return '{0.ortho} | {0.rank} | {0.freq} | {0.tag} {0.pos_int}'.format(self)
+    def __repr__(self):
+        return '{0.ortho} | {0.rank} | {0.freq} | {0.tags}'.format(self) # {0.pos_int}
 
 ####################################################################################################
 
@@ -205,17 +193,16 @@ class WordEntry:
 
 ####################################################################################################
 
-sqlite_path = ConfigInstall.Corpus.sqlite_path
-database = CorpusSqliteDataBase(sqlite_path)
-
-####################################################################################################
-
 words = {}
+
+print('Read words ...')
+word_counter = 0
 with sys.stdin as file_input:
     for i, line in enumerate(file_input):
         if i == 0:
             continue
         word_entry = WordEntry(line)
+        word_counter += 1
         if not word_entry.cgram:
             print(word_entry.ortho)
         else:
@@ -224,24 +211,14 @@ with sys.stdin as file_input:
                 words[word.ortho].merge(word)
             else:
                 words[word.ortho] = word
+print('Number of words {}'.format(word_counter))
 
-# Empty cgram
-#
-# {'ortho': 'o', 'phon': 'o', 'lemme': 'o', 'cgram': '', 'genre': '', 'nombre': '', 'freq': 0.02}
-# {'ortho': 'team', 'phon': 'tim', 'lemme': 'team', 'cgram': '', 'genre': '', 'nombre': '', 'freq': 0.06}
-# {'ortho': 'à brûle-pourpoint', 'phon': 'abRylpuRpw5', 'lemme': 'à brûle-pourpoint', 'cgram': '', 'genre': '', 'nombre': '', 'freq': 0.28}
-# {'ortho': 'à cloche-pied', 'phon': 'aklOSpje', 'lemme': 'à cloche-pied', 'cgram': '', 'genre': '', 'nombre': '', 'freq': 0.44}
-# {'ortho': 'à rebrousse-poil', 'phon': 'aR°bRuspwal', 'lemme': 'à rebrousse-poil', 'cgram': '', 'genre': '', 'nombre': '', 'freq': 0.16}
-# {'ortho': 'à tire-larigot', 'phon': 'atiRlaRigo', 'lemme': 'à tire-larigot', 'cgram': '', 'genre': '', 'nombre': '', 'freq': 0.34}
-# {'ortho': 'à touche-touche', 'phon': 'atuStuS', 'lemme': 'à touche-touche', 'cgram': '', 'genre': '', 'nombre': '', 'freq': 0.02}
-# {'ortho': 'à tue-tête', 'phon': 'atytEt', 'lemme': 'à tue-tête', 'cgram': '', 'genre': '', 'nombre': '', 'freq': 1.08}
+# if set(POS) != WordEntry.grammatical_category:
+#     print('POS mismatch:', grammatical_category - set(POS), set(POS) - grammatical_category)
 
-if set(POS) != WordEntry.grammatical_category:
-    print('POS mismatch:', grammatical_category - set(POS), set(POS) - grammatical_category)
-
+print('Rank words ...')
 for word in words.values():
     word.round_freq()
-
 ranked_words = sorted(words.values(), key=lambda word: word.freq, reverse=True)
 for i, word in enumerate(ranked_words):
     word.rank = i + 1
@@ -250,17 +227,24 @@ for i, word in enumerate(ranked_words):
 
 ####################################################################################################
 
+print('Store {} words ...'.format(len(ranked_words)))
 word_table = database.corpus_fr_table
 for word in ranked_words:
     try:
         lemma_id = words[word.lemme].rank
     except KeyError:
         lemma_id = 0
-    print(word, '>>>', lemma_id)
+    print(repr(word), '>>>', lemma_id)
     word_table.add_new_row(
         word=word.ortho,
-        pos_tags=word.pos_int,
+        tags1=word.tags_int,
         rank=word.rank,
+        frequency=word.freq,
         lemma_id=lemma_id,
     )
+print('commit table')
 word_table.commit()
+print('commit done')
+
+print('Number of ranked words {}'.format(len(ranked_words)))
+

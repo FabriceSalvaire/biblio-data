@@ -1,0 +1,167 @@
+#! /usr/bin/env python3
+# -*- Python -*-
+
+####################################################################################################
+#
+# Babel - A Bibliography Manager
+# Copyright (C) 2014 Fabrice Salvaire
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+####################################################################################################
+
+####################################################################################################
+
+import argparse
+import sys
+
+from Babel.Config import ConfigInstall
+from Babel.Corpus import tag_registry
+from Babel.DataBase.CorpusDataBase import CorpusSqliteDataBase
+
+####################################################################################################
+
+argument_parser = argparse.ArgumentParser(description='Make BNC database.')
+
+argument_parser.add_argument(
+    '--word-count-min',
+    type=int,
+    default=10,
+    help='Minimum word count [10]',
+)
+
+args = argument_parser.parse_args()
+word_count_min = args.word_count_min
+
+####################################################################################################
+
+sqlite_path = ConfigInstall.Corpus.sqlite_path
+database = CorpusSqliteDataBase(sqlite_path)
+en_tags = tag_registry['en']
+
+####################################################################################################
+
+class Word:
+
+    excluded_counter = 0
+
+    ##############################################
+
+    def __init__(self, line):
+
+        word_count, word, tag, file_count = line.split(' ')
+
+        self.word = word.lower()
+        self.word_count = int(word_count)
+        self.tags = [tag.upper()]
+        self.rank = 0
+        self.excluded = self._is_excluded()
+        if self.excluded:
+            Word.excluded_counter += 1
+
+    ##############################################
+
+    def _is_excluded(self):
+
+        if self.tags[0] not in en_tags:
+            return True
+        if not (self.word[0].isalpha() and
+                self.word[-1].isalpha()):
+            return True
+        for char in self.word:
+            if not (char.isalpha() or char in ('-',)):
+                return True
+        return False
+
+    ##############################################
+
+    def __bool__(self):
+        return not self.excluded
+
+    ##############################################
+
+    def merge(self, word):
+
+        self.tags += word.tags
+        self.word_count += word.word_count
+
+    ##############################################
+
+    def __str__(self):
+        return self.word
+
+    ##############################################
+
+    @property
+    def tags_int(self):
+        return en_tags.encode_tags(self.tags)
+
+    ##############################################
+
+    def __repr__(self):
+        return '{0.word} | {0.rank} | {0.word_count} | {0.tags}'.format(self) #  {0.tags_int}
+
+####################################################################################################
+
+words = {}
+
+print('Read words ...')
+word_counter = 0
+with sys.stdin as file_input:
+    for line in file_input:
+        word_entry = Word(line)
+        word_counter += 1
+        if bool(word_entry):
+            word = str(word_entry)
+            if word in words:
+                words[word].merge(word_entry)
+            else:
+                words[word] = word_entry
+        else:
+            # print('exclude {}'.format(repr(word_entry)))
+            pass
+print('Number of words {}'.format(word_counter))
+
+print('Rank words ...')
+ranked_words = sorted(words.values(), key=lambda word: word.word_count, reverse=True)
+for i, word in enumerate(ranked_words):
+    word.rank = i + 1
+    # word.excluded = word_entry.word_count < word_count_min
+    # print(word.excluded, '|', repr(word))
+
+print('Store {} words ...'.format(len(ranked_words)))
+word_table = database.corpus_en_table
+for word_entry in ranked_words:
+    if word.excluded:
+        continue
+    rank = word_entry.rank
+    tags1, tags2 = word_entry.tags_int
+    # print(repr(word_entry))
+    row = word_table.add_new_row(
+        word=str(word_entry),
+        tags1=tags1,
+        tags2=tags2,
+        rank=rank,
+        frequency=word_entry.word_count,
+        lemma_id=0,
+    )
+    if not rank % 10000:
+        print("Rank {}: commit table".format(rank))
+        word_table.commit()
+print('commit table')
+word_table.commit()
+print('commit done')
+
+print('Number of excluded words {}'.format(Word.excluded_counter))
+print('Number of ranked words {}'.format(len(ranked_words)))

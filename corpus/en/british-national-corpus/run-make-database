@@ -1,0 +1,4 @@
+#! /usr/bin/bash
+
+# rm -f ../../corpus.sqlite
+zcat all.num.gz | ./make-database
