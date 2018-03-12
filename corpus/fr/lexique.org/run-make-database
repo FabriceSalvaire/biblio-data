@@ -1,0 +1,4 @@
+#! /usr/bin/bash
+
+# rm -f ../../corpus.sqlite
+zcat lexique-v382.txt.gz | ./make-database
