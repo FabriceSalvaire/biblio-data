@@ -64,7 +64,7 @@ class Word:
 
         self.word = word.lower()
         self.word_count = int(word_count)
-        self.tags = [tag.upper()]
+        self.tags = [tag.upper()] # set ? cf. French version
         self.rank = 0
         self.excluded = self._is_excluded()
         if self.excluded:
