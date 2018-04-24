@@ -141,7 +141,7 @@ class Word:
         for key in ('ortho', 'phon', 'lemme', 'genre', 'nombre'):
             setattr(self, key, getattr(word_entry, key))
 
-        self.tags = [word_entry.cgram]
+        self.tags = set((word_entry.cgram,))
         self.freq = sum([float(value) for value in (word_entry.freqfilms2, word_entry.freqlivres)])
         self.freq *= 1e6
         self.rank = 0
@@ -150,7 +150,7 @@ class Word:
 
     def merge(self, word):
 
-        self.tags += word.tags
+        self.tags |= word.tags
         self.freq += word.freq
 
     ##############################################
